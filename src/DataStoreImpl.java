@@ -376,8 +376,6 @@ public class DataStoreImpl implements DataStore {
 		String DATE_FORMAT_NOW = "dd.MM.YYYY";
 		Date date = new Date();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(DATE_FORMAT_NOW);
-		System.out.println(simpleDateFormat.format(date));
-		
 		
 		try {
 			
@@ -396,6 +394,27 @@ public class DataStoreImpl implements DataStore {
 		
 		closeStatement(pStmt);
 
+	}
+	
+	@Override
+	public void addCategory(Category category) {
+		
+		PreparedStatement pStmt = null;
+		
+		try {
+			
+			pStmt = conn.prepareStatement("INSERT INTO CATEGORY (description) VALUES (?)");
+			pStmt.setString(1, category.getDescription());
+			pStmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			
+		}
+		
+		closeStatement(pStmt);
+		
 	}
 
 	@Override
@@ -540,7 +559,7 @@ public class DataStoreImpl implements DataStore {
 		
 	}
 	
-	public String getMD5Hash(String password){
+	private String getMD5Hash(String password){
 
 		try {
 

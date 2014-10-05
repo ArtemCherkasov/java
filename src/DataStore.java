@@ -12,6 +12,7 @@ public interface DataStore {
 	void addUser(User user);
 	void addAccount(User user, Account account);
 	void addRecord(Account account, Record record);
+	void addCategory(Category category);
 	User removeUser(String name);	// return removed User or null if no such user
 	Account removeAccount(User owner, Account account);	// return null if no such account
 	Record removeRecord(Account from, Record record);	// return null if no such record
