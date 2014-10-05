@@ -1,6 +1,7 @@
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -35,17 +36,11 @@ public class TestDB{
 		if (dataStoreImpl.getCategories().isEmpty())
 			dataStoreImpl.addCategory(category);
 		
-		for (Category c:dataStoreImpl.getCategories()){
-			
-			category = c;
-			
-		}
+		Iterator<Category> itCatecory = dataStoreImpl.getCategories().iterator();
+		category = itCatecory.next();
 		
-		for (Account a: dataStoreImpl.getAccounts(user)){
-			
-			account = a;
-			
-		}
+		Iterator<Account> itAccount = dataStoreImpl.getAccounts(user).iterator();
+		account = itAccount.next();
 		
 		if (dataStoreImpl.getRecords(account).isEmpty()){
 			
