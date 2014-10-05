@@ -14,7 +14,7 @@ public class DataStoreImpl implements DataStore {
 
 	private Connection conn;
 	
-	public DataStoreImpl() throws SQLException {
+	public DataStoreImpl(){
 		
 		conn = new DbHelper().getConn();
 		
