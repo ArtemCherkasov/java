@@ -43,7 +43,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -81,7 +81,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -117,7 +117,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -150,7 +150,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -188,7 +188,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -225,7 +225,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -262,7 +262,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -302,7 +302,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -338,7 +338,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			closeResource(rs);
 			
 		}
@@ -367,7 +367,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			
 		}
 
@@ -391,7 +391,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			
 		}
 
@@ -420,7 +420,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			
 		}
 
@@ -443,7 +443,7 @@ public class DataStoreImpl implements DataStore {
 			
 		} finally {
 			
-			closeStatement(pStmt);
+			closeResource(pStmt);
 			
 		}
 		
@@ -481,7 +481,7 @@ public class DataStoreImpl implements DataStore {
 				
 			} finally {
 				
-				closeStatement(pStmt);
+				closeResource(pStmt);
 				
 			}
 			
@@ -524,7 +524,7 @@ public class DataStoreImpl implements DataStore {
 				
 			} finally {
 				
-				closeStatement(pStmt);
+				closeResource(pStmt);
 				
 			}
 			
@@ -558,7 +558,7 @@ public class DataStoreImpl implements DataStore {
 				
 			} finally {
 				
-				closeStatement(pStmt);
+				closeResource(pStmt);
 				
 			}
 			
@@ -568,34 +568,17 @@ public class DataStoreImpl implements DataStore {
 		
 	}
 	
-	private void closeResource(ResultSet rs){
+	private void closeResource(AutoCloseable res){
 		
 		try {
 			
-			if (rs != null){
-				rs.close();
+			if (res != null){
+				res.close();
 			}
 			
-		} catch (SQLException e) {
-		
+		} catch (Exception e) {
+
 			e.printStackTrace();
-			
-		}
-		
-	}
-	
-	private void closeStatement(PreparedStatement pStmt){
-		
-		try {
-			
-			if (pStmt != null){
-				pStmt.close();
-			}
-			
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-			
 		}
 		
 	}

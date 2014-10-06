@@ -26,12 +26,7 @@ public class DbHelper {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sqlQuery);
 			
-			if(stmt != null){
-				
-				stmt.close();
-				
-			}
-			
+						
 		} catch (ClassNotFoundException e) {
 
 			e.printStackTrace();
@@ -43,13 +38,32 @@ public class DbHelper {
 		} catch (FileNotFoundException e) {
 
 			e.printStackTrace();
+			
+		} finally {
+			
+			if(stmt != null){
+				
+				try {
+					
+					stmt.close();
+					
+				} catch (SQLException e) {
+
+					e.printStackTrace();
+					
+				}
+				
+			}
+			
 		}
 
 		return conn;
 		
 	}
-
-
+	
+	private DbHelper() {
+		
+	}
 
 	public static DbHelper getDbHelper() {
 		
