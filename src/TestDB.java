@@ -10,10 +10,11 @@ import org.junit.Test;
 
 public class TestDB{
 	
+	DataStoreImpl dataStoreImpl = new DataStoreImpl();
+	
 	@Before
 	public void putData(){
 		
-		DataStoreImpl dataStoreImpl = new DataStoreImpl();
 		User user = new User();
 		user.setLogin("randomUser");
 		user.setName("USER");
@@ -61,7 +62,6 @@ public class TestDB{
 	@Test
 	public void testData(){
 		
-		DataStoreImpl dataStoreImpl = new DataStoreImpl();
 		User user = dataStoreImpl.getUser("randomUser");
 		Set<Account> accounts = dataStoreImpl.getAccounts(user);
 		Set<Record> records = new HashSet<Record>();

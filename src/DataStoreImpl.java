@@ -13,41 +13,42 @@ import java.util.Set;
 public class DataStoreImpl implements DataStore {
 
 	private Connection conn;
+	private DbHelper dbHelper = DbHelper.getDbHelper();
 	
 	public DataStoreImpl(){
 		
-		conn = new DbHelper().getConn();
+		conn = dbHelper.getConn();
 		
 	}
 	
 	public Boolean loginUser(String login, String password){
 		
-		Integer rowCount = 0;
 		PreparedStatement pStmt = null;
 		ResultSet rs = null;
+		Boolean returnLogin = false;
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM USER WHERE (login = ? AND password = ?)");
+			pStmt = conn.prepareStatement("SELECT * FROM USER WHERE login = ? AND password = ?;");
 			pStmt.setString(1, login);
 			pStmt.setString(2, getMD5Hash(password));
 			rs = pStmt.executeQuery();
 			
-			while (rs.next()) {
-				
-				++rowCount;
-				
-			}
+			if(rs.next()) returnLogin = true;
+
 			
 		} catch (SQLException e) {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
-		return rowCount > 0;
+		return returnLogin;
 		
 	}
 	
@@ -60,7 +61,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM USER WHERE (login = ?)");
+			pStmt = conn.prepareStatement("SELECT * FROM USER WHERE login = ?;");
 			pStmt.setString(1, login);
 			rs = pStmt.executeQuery();
 			
@@ -78,10 +79,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return user;
 		
 	}
@@ -95,7 +99,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM CATEGORY WHERE (id = ?)");
+			pStmt = conn.prepareStatement("SELECT * FROM CATEGORY WHERE id = ?;");
 			pStmt.setInt(1, id);
 			rs = pStmt.executeQuery();
 			
@@ -111,10 +115,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return category;
 		
 	}
@@ -128,7 +135,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM USER ORDER BY surname");
+			pStmt = conn.prepareStatement("SELECT * FROM USER ORDER BY surname;");
 			rs = pStmt.executeQuery();
 			
 			while (rs.next()) {
@@ -141,10 +148,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return users;
 		
 	}
@@ -158,7 +168,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM ACCOUNT WHERE (user_login = ?) ORDER BY id");
+			pStmt = conn.prepareStatement("SELECT * FROM ACCOUNT WHERE user_login = ? ORDER BY id;");
 			pStmt.setString(1, owner.getLogin());
 			rs = pStmt.executeQuery();
 			
@@ -176,10 +186,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return accounts;
 		
 	}
@@ -192,7 +205,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM ACCOUNT WHERE (id = ?)");
+			pStmt = conn.prepareStatement("SELECT * FROM ACCOUNT WHERE id = ?;");
 			pStmt.setInt(1, id);
 			rs = pStmt.executeQuery();
 			
@@ -210,10 +223,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return account;
 		
 	}
@@ -226,7 +242,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM RECORD WHERE (id = ?)");
+			pStmt = conn.prepareStatement("SELECT * FROM RECORD WHERE id = ?;");
 			pStmt.setInt(1, id);
 			rs = pStmt.executeQuery();
 			
@@ -244,10 +260,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return record;
 		
 	}
@@ -261,7 +280,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("SELECT * FROM RECORD WHERE (id_account = ?) ORDER BY id");
+			pStmt = conn.prepareStatement("SELECT * FROM RECORD WHERE id_account = ? ORDER BY id;");
 			pStmt.setInt(1, account.getId());
 			rs = pStmt.executeQuery();
 			
@@ -281,10 +300,13 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
 		
-		closeStatement(pStmt);
-		closeResource(rs);
 		return records;
 		
 	}
@@ -314,10 +336,12 @@ public class DataStoreImpl implements DataStore {
 
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			closeResource(rs);
+			
 		}
-		
-		closeStatement(pStmt);
-		closeResource(rs);
 		
 		return categories;
 		
@@ -330,7 +354,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("INSERT INTO USER (login, password, name, surname) VALUES (?, ?, ?, ?)");
+			pStmt = conn.prepareStatement("INSERT INTO USER (login, password, name, surname) VALUES (?, ?, ?, ?);");
 			pStmt.setString(1, user.getLogin());
 			pStmt.setString(2, getMD5Hash(user.getPassword()));
 			pStmt.setString(3, user.getName());
@@ -341,9 +365,11 @@ public class DataStoreImpl implements DataStore {
 			
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			
 		}
-		
-		closeStatement(pStmt);
 
 	}
 
@@ -354,7 +380,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("INSERT INTO ACCOUNT (user_login, funds) VALUES (?, ?)");
+			pStmt = conn.prepareStatement("INSERT INTO ACCOUNT (user_login, funds) VALUES (?, ?);");
 			pStmt.setString(1, user.getLogin());
 			pStmt.setDouble(2, account.getFunds());
 			pStmt.executeUpdate();
@@ -363,9 +389,11 @@ public class DataStoreImpl implements DataStore {
 			
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			
 		}
-		
-		closeStatement(pStmt);
 
 	}
 
@@ -379,7 +407,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("INSERT INTO RECORD (id_account, funds, date, id_category) VALUES (?, ?, ?, ?)");
+			pStmt = conn.prepareStatement("INSERT INTO RECORD (id_account, funds, date, id_category) VALUES (?, ?, ?, ?);");
 			pStmt.setInt(1, account.getId());
 			pStmt.setDouble(2, record.getFunds());
 			pStmt.setString(3, simpleDateFormat.format(date).toString());
@@ -390,9 +418,11 @@ public class DataStoreImpl implements DataStore {
 			
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			
 		}
-		
-		closeStatement(pStmt);
 
 	}
 	
@@ -403,7 +433,7 @@ public class DataStoreImpl implements DataStore {
 		
 		try {
 			
-			pStmt = conn.prepareStatement("INSERT INTO CATEGORY (description) VALUES (?)");
+			pStmt = conn.prepareStatement("INSERT INTO CATEGORY (description) VALUES (?);");
 			pStmt.setString(1, category.getDescription());
 			pStmt.executeUpdate();
 			
@@ -411,9 +441,11 @@ public class DataStoreImpl implements DataStore {
 			
 			e.printStackTrace();
 			
+		} finally {
+			
+			closeStatement(pStmt);
+			
 		}
-		
-		closeStatement(pStmt);
 		
 	}
 
@@ -431,7 +463,7 @@ public class DataStoreImpl implements DataStore {
 			
 			try {
 				
-				pStmt = conn.prepareStatement("DELETE FROM USER WHERE login = ?");
+				pStmt = conn.prepareStatement("DELETE FROM USER WHERE login = ?;");
 				pStmt.setString(1, login);
 				result = pStmt.executeUpdate();
 				
@@ -447,11 +479,14 @@ public class DataStoreImpl implements DataStore {
 
 				e.printStackTrace();
 				
+			} finally {
+				
+				closeStatement(pStmt);
+				
 			}
 			
 		}
-		
-		closeStatement(pStmt);
+
 		return user;
 		
 	}
@@ -470,7 +505,7 @@ public class DataStoreImpl implements DataStore {
 			
 			try {
 				
-				pStmt = conn.prepareStatement("DELETE FROM ACCOUNT WHERE (user_login = ? AND id = ?)");
+				pStmt = conn.prepareStatement("DELETE FROM ACCOUNT WHERE user_login = ? AND id = ?;");
 				pStmt.setString(1, owner.getLogin());
 				pStmt.setInt(2, account.getId());
 				result = pStmt.executeUpdate();
@@ -487,11 +522,14 @@ public class DataStoreImpl implements DataStore {
 
 				e.printStackTrace();
 				
+			} finally {
+				
+				closeStatement(pStmt);
+				
 			}
 			
 		}
-		
-		closeStatement(pStmt);
+
 		return ac;
 		
 	}
@@ -509,7 +547,7 @@ public class DataStoreImpl implements DataStore {
 			
 			try {
 				
-				pStmt = conn.prepareStatement("DELETE FROM RECORD WHERE (id = ? AND id_account = ?)");
+				pStmt = conn.prepareStatement("DELETE FROM RECORD WHERE id = ? AND id_account = ?;");
 				pStmt.setInt(1, record.getId());
 				pStmt.setInt(2, from.getId());
 				result = pStmt.executeUpdate();
@@ -518,11 +556,14 @@ public class DataStoreImpl implements DataStore {
 
 				e.printStackTrace();
 				
+			} finally {
+				
+				closeStatement(pStmt);
+				
 			}
 			
 		}
 		
-		closeStatement(pStmt);
 		return rec;
 		
 	}

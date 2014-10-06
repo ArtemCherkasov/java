@@ -8,10 +8,10 @@ import java.util.Scanner;
 
 public class DbHelper {
 	
+	private static DbHelper dbHelper;
 	private final String CREATETABLES_SQL_PATH = "src/createTables.sql";
-	
 	private Connection conn;
-
+	
 	@SuppressWarnings("resource")
 	public Connection getConn() {
 		
@@ -46,6 +46,20 @@ public class DbHelper {
 		}
 
 		return conn;
+		
+	}
+
+
+
+	public static DbHelper getDbHelper() {
+		
+		if(dbHelper == null){
+			
+			dbHelper = new DbHelper();
+			
+		}
+		
+		return dbHelper;
 		
 	}
 
