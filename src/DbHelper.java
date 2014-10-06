@@ -22,8 +22,9 @@ public class DbHelper {
 			Class.forName("org.sqlite.JDBC");
 			String databaseUrl = "jdbc:sqlite:mydatabase.db";
 			conn = DriverManager.getConnection(databaseUrl);
+			String sqlQuery = new Scanner(new File(CREATETABLES_SQL_PATH)).useDelimiter("\\A").next();
 			stmt = conn.createStatement();
-			stmt.executeUpdate(new Scanner(new File(CREATETABLES_SQL_PATH)).useDelimiter("\\A").next());
+			stmt.executeUpdate(sqlQuery);
 			
 			if(stmt != null){
 				
